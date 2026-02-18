@@ -95,7 +95,7 @@ RUN wget https://github.com/ros/xacro/archive/refs/tags/${XACRO_VERSION}.tar.gz 
     rm -rf geographic-info
     
 # Install cython
-RUN python3 -m pip install --upgrade cython
+RUN python3 -m pip install --upgrade cython --index-url https://pypi.org/simple
 
 # Build the dependencies and the ZED ROS2 Wrapper
 WORKDIR /root/ros2_ws
@@ -108,6 +108,11 @@ RUN /bin/bash -c "source /opt/ros/$ROS_DISTRO/install/setup.bash && \
   ' --no-warn-unused-cli' "
 
 WORKDIR /root/ros2_ws
+RUN sudo apt install ros-$ROS_DISTRO-foxglove-bridge
+RUN echo "source /opt/ros/$ROS_DISTRO/install/setup.bash" >> /root/.bashrc
+RUN echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc
+RUN echo "source /root/ros2_ws_new/install/setup.bash" >> /root/.bashrc
+RUN echo "export ROS_DOMAIN_ID=70" >> /root/.bashrc
 
 # Setup environment variables 
 COPY ros_entrypoint_jetson.sh /sbin/ros_entrypoint.sh

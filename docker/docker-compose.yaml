@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  zed_ros2:
+    container_name: zed_ros2
+    image: zed_ros2_l4t_36.4.0_sdk_5.0.0:latest  # Replace with your image tag
+    runtime: nvidia
+    privileged: true
+    network_mode: host
+    ipc: host
+    pid: host
+    environment:
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp:/tmp
+      - /dev:/dev
+      - /var/nvidia/nvcam/settings/:/var/nvidia/nvcam/settings/
+      - /etc/systemd/system/zed_x_daemon.service:/etc/systemd/system/zed_x_daemon.service
+      - /usr/local/zed/resources/:/usr/local/zed/resources/
+      - /usr/local/zed/settings/:/usr/local/zed/settings/
+      - /home/airlab/code/ros2_ws_new/:/root/ros2_ws_new/
+      - /home/airlab/code/zed-ros2-wrapper/zed_components:/root/ros2_ws/src/zed_components
+      - /home/airlab/code/zed-ros2-wrapper/zed_ros2:/root/ros2_ws/src/zed_ros2
+      - /home/airlab/code/zed-ros2-wrapper/zed_wrapper:/root/ros2_ws/src/zed_wrapper
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    stdin_open: true   # equivalent to -it
+    tty: true          # equivalent to -it
